@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+
+# bf16-compiler
+# compiles bf16 code into object code for a bf16 cpu
+#
+#  input: bf16 code on stdin
+# output: bf16 object code on stdout
+
+import sys
+
+instructionSet = dict({'@': 0x00, '!': 0x01, '>': 0x02, '<': 0x03,
+                       '+': 0x04, '-': 0x05, '.': 0x08, ',': 0x09,
+                       '[': 0x10, ']': 0x11})
+
+def parseCode(code):
+    i=0
+    instructions = dict()
+    loops = list()
+
+    for instruction in code:
+        if instruction in instructionSet:
+            instructions[i] = instructionSet[instruction]
+            if instruction is '[':
+                loops.append(i)
+                i += 1
+            if instruction is ']':
+                if len(loops) > 0:
+                    matchingLoop = loops.pop()
+                    instructions[i+1] = matchingLoop + 2
+                    instructions[matchingLoop+1] = i + 2
+                    i += 1
+                else:
+                    return None
+            i += 1
+
+    if len(loops) == 0:
+        return instructions
+    else:
+        return None
+
+def printCode(objectCode):
+    for i,instruction in objectCode.iteritems():
+        print "%x" % instruction
+
+def main():
+    code = sys.stdin.read()
+    instructions = parseCode(code)
+
+    if instructions is None:
+        print "Error: unmatched loop"
+    else:
+        printCode(instructions)
+
+if __name__ == '__main__':
+    main()
