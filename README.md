@@ -98,10 +98,14 @@ separately.
 
 ## The CPU
 
+![bf16 cpu diagram](https://raw.github.com/briandef/bf16/master/images/bf16.cpu.png "images/bf16.cpu.png")
+
 The bf16 cpu was designed in <a href="http://ozark.hendrix.edu/~burch/logisim/">Logisim</a>, a neat tool
 for experimenting with digital components and circuits. It primarily consists of an instruction pointer IP,
 instructions ROM, data pointer DP, and data RAM, plus all the components to run instructions. It faithfully
 implements the above instruction set.
+
+*Before you read on, you may wish to open bf16.circ in Logisim or view images/bf16.cpu.png*
 
 The first meta instruction, stop execution **@**, is implemented by disabling IP updates when all the bits in
 the instruction are 0 (or, conversely, only enabling IP updates when at least one bit in the instruction is set).
