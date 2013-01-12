@@ -40,7 +40,7 @@ instructions **@ !**, as described below. This yields 10 total instructions, gro
 * These instructions are essentially jumps
 * The jump destination is stored immediately after the loop instruction
 * **[** sets the instruction pointer to the value after the loop instruction if the value at the data pointer is 0
-* **]** sets the instruction pointer to the value after the loop instruction if the value at the data pointer is *not* 0
+* **]** sets the instruction pointer to the value after the loop instruction if the value at the data pointer isn't 0
 * If a jump is required, loop instructions must read the next instruction pointer value and so take 2 cpu cycles
 * If a jump is not required, loop instructions take 1 cpu cycle as with simple instructions.
 
@@ -90,3 +90,38 @@ instruction after the last command at load time, or when object code is translat
 Compilers *should not* add a 0x0 instruction at compile time, so that multiple consecutive segments can be compiled
 separately.
 
+## The CPU
+
+The bf16 cpu was designed in <a href="http://ozark.hendrix.edu/~burch/logisim/">Logisim</a>, a neat tool
+for experimenting with digital components and circuits. It primarily consists of an instruction pointer IP,
+instructions ROM, data pointer DP, and data RAM, plus all the components to run instructions. It faithfully
+implements the above instruction set.
+
+The first meta instruction, stop execution **@**, is implemented by disabling IP updates when all the bits in
+the instruction are 0 (or, conversely, only enabling IP updates when at least one bit in the instruction is set).
+The no-op instruction **!** has no specific implementation beyond ensuring that the cpu state is exactly the same
+after the instruction is processed.
+
+Pointer instructions **> <** are implemented with a mux using the instruction bits to select either a 1 or a -1,
+running that value through an adder with the current value of DP, and storing the result in DP.
+
+Value instructions **+ -** are implemented by using the bits in the instruction to construct either a 1 or a -1,
+running that value through an adder with the current value of the data at DP, and storing that value in RAM at DP.
+
+Input/output instructions **. ,** use AND gates to determine which instruction is active. If output is selected,
+the TTY reads an ascii value from RAM at DP and prints it. If input is selected, a byte flows from either the
+stdin ROM or the keyboard components (depending on the stdin mux) through to RAM while the instruction bits are
+used to enable RAM updates.
+
+Loop instructions **[ ]** are the most complicated. Four separate AND gates (two for each instruction) look at
+whether the value currently at RAM is 0. This activates either the branching OR gate or the incrementing OR gate.
+The incrementing gate activates a mux which selects a 2 to add to IP instead of the normal 1, and execution
+continues as normal. The branching gate activates a Q flip-flop which interferes with processing the next
+instruction. On the next clock cycle, the flip-flop activates a mux which sends the no-op value of 0x1 to be
+processed by the CPU. At the same time, the value of IP is set to the current instruction value. Execution
+then continues as normal.
+
+All this is easier to process after seeing it running in Logisim compared to just reading...
+
+Other features of the cpu include a counter **#Instr** which counts how many cpu cycles have been processed
+and a pin to choose whether stdin comes from the keyboard component or the ROM component, as mentioned above.
