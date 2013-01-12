@@ -1,9 +1,12 @@
-bf16: a 16-bit brainfuck cpu
-====
+# bf16: a 16-bit brainfuck cpu
+
+## Introduction
 
 The bf16 cpu was designed to run object code compiled from a brainfuck source file. Originally intended
 to be 8-bit to be as small as possible, the design was changed to 16 bits so that more than 30,000 memory
 addresses could be referenced, in line with the classic brainfuck implementation. 
+
+## The Instruction Set
 
 The instruction set includes the standard brainfuck instructions **> < + - , . [ ]** plus two meta
 instructions **@ !**, as described below. This yields 10 total instructions, grouped into 5 pairs.
@@ -34,24 +37,26 @@ instructions **@ !**, as described below. This yields 10 total instructions, gro
 
 5\. Loop Instructions
 
-* **[** sets the instruction pointer to the value after the loop instruction if the value at the data pointer is 0
-* **]** sets the instruction pointer to the value after the loop instruction if the value at the data pointer is 0
 * These instructions are essentially jumps
+* The jump destination is stored immediately after the loop instruction
+* **[** sets the instruction pointer to the value after the loop instruction if the value at the data pointer is 0
+* **]** sets the instruction pointer to the value after the loop instruction if the value at the data pointer is *not* 0
 * If a jump is required, loop instructions must read the next instruction pointer value and so take 2 cpu cycles
 * If a jump is not required, loop instructions take 1 cpu cycle as with simple instructions.
 
-Each pair of instructions is specified by a different bit in the object code, while the low bit indicates which
-instruction of the pair to execute. This table, with the specification bit highlighted, should help clarify:
+Each pair of instructions is specified by a different bit in the object code (or the lack of bits, in the case
+of meta instructions), while the low bit indicates which instruction of the pair to execute. This table, with
+the specification bits highlighted, should help clarify:
 
 <table>
   <tr>
     <th>Binary</th><th>Hex</th><th>Instruction</th><th>Type</th>
   </tr>
   <tr>
-    <td>000000<b>0</b>0</td><td>0x00</td><td>@</td><td>M</td>
+    <td>000<b>0000</b>0</td><td>0x00</td><td>@</td><td>M</td>
   </tr>
   <tr>
-    <td>000000<b>0</b>1</td><td>0x01</td><td>!</td><td>M</td>
+    <td>000<b>0000</b>1</td><td>0x01</td><td>!</td><td>M</td>
   </tr>
   <tr>
     <td>000000<b>1</b>0</td><td>0x02</td><td>&gt;</td><td>P</td>
@@ -84,3 +89,4 @@ read 0x0 after the last instruction and stop execution. If this is not the case,
 instruction after the last command at load time, or when object code is translated to a certain cpu implementation.
 Compilers *should not* add a 0x0 instruction at compile time, so that multiple consecutive segments can be compiled
 separately.
+
