@@ -99,8 +99,8 @@ implements the above instruction set.
 
 The first meta instruction, stop execution **@**, is implemented by disabling IP updates when all the bits in
 the instruction are 0 (or, conversely, only enabling IP updates when at least one bit in the instruction is set).
-The no-op instruction **!** has no specific implementation beyond ensuring that the cpu state is exactly the same
-after the instruction is processed.
+The no-op instruction **!** has no specific implementation beyond ensuring that no other instructions are
+executed or processed this clock cycle (the second part of a two-cycle instruction may occur, however.)
 
 Pointer instructions **> <** are implemented with a mux using the instruction bits to select either a 1 or a -1,
 running that value through an adder with the current value of DP, and storing the result in DP.
