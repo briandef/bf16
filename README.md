@@ -1,10 +1,10 @@
 # bf16: a 16-bit brainfuck cpu
 
-* <a href="">bf16: a 16-bit brainfuck cpu</a>
-* <a href="">Introduction</a>
-* <a href="">The Instruction Set</a>
-* <a href="">The CPU</a>
-* <a href="">The Compiler</a>
+* <a href="#bf16-a-16-bit-brainfuck-cpu">bf16: a 16-bit brainfuck cpu</a>
+* <a href="#introduction">Introduction</a>
+* <a href="#the-instruction-set">The Instruction Set</a>
+* <a href="#the-cpu">The CPU</a>
+* <a href="#the-compiler">The Compiler</a>
 
 ## Introduction
 
@@ -135,15 +135,15 @@ and a pin to choose whether stdin comes from the keyboard component or the ROM c
 ## The Compiler
 
 The bf16-compiler was written in python. It uses an (initally empty) dictionary to keep track the instruction
-object code and a stack to keep track of loops. A for loop steps over every character in the source code and
+object code and a stack to keep track of loops. A **for** loop steps over every character in the source code and
 records the object code for the current instruction in the dictionary. If the instruction is a simple one-cycle
-command, the compiler moves on to the next character.
+command **@ ! > < + - . ,** the compiler moves on to the next character.
 
 Loop instructions are followed by the IP to jump to if needed. When processing opening loop instructions  **[**,
 this location is not known until the matching end loop instruction **]** is found. Therefore, the compiler just
 pushes the current location onto the stack and moves on. When the match is found, the compiler pops the most
 recent IP location off the stack and uses that value to backfill the dictionary with the now known memory location.
-It also uses the popped value to calculate the correct memory value for the current loop, and puts that into
+It also uses the popped value to calculate the correct memory value for the current loop and puts it into
 the dictionary.
 
 If the compiler finds an end loop and the stack is empty, it errors with a message about unmatched loops.
