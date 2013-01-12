@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+
+# make-stdin-rom
+# prints stdin in a rom format that can be understood by Logisim
+#
+#  input: miscellaneous data on stdin
+# output: Logisim rom to be used as bf16 cpu stdin on stdout
+
+import sys
+
+def main():
+    data = sys.stdin.read()
+    print "v2.0 raw"
+    for datum in data:
+        print hex(ord(datum)).lstrip('0x')
+
+main()
