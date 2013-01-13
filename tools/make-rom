@@ -12,6 +12,6 @@ def main():
     instructions = sys.stdin.readlines()
     print "v2.0 raw"
     for instruction in instructions:
-        print datum.strip()
+        print instruction.strip()
 
 main()
