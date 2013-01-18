@@ -173,9 +173,9 @@ Then make the rom image with `tools/make-rom`:
 
 This is all done in one easy step with `tee`:
 
-`<examples/hellworld.bf ./bf16-compiler | tee examples/helloworld.bf16 | tools/make-rom > examples/hellworld.rom`
+`<examples/helloworld.bf ./bf16-compiler | tee examples/helloworld.bf16 | tools/make-rom > examples/helloworld.rom`
 
-At this point `hellworld.rom` can be loaded in Logisim by right clicking the instructions ROM and choosing
+At this point `helloworld.rom` can be loaded in Logisim by right clicking the instructions ROM and choosing
 'Load Image'.
 
 ## Why?!
