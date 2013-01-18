@@ -152,3 +152,31 @@ the dictionary.
 
 If the compiler finds an end loop and the stack is empty, it errors with a message about unmatched loops.
 Likewise if the stack isn't empty after code processing is complete.
+
+## Compiling and Running Brainfuck Code
+
+As mentioned above, the bf16-compiler turns brainfuck source code into object code for the cpu. The output can
+be directly loaded onto a the instructions ROM in the circuit. However, Logisim requires a header on ROM images,
+so after compiling there's an additional step. The `tools/make-rom` script adds the header to the ROM image so
+that it will load properly in Logisim.
+
+To compile the `helloword.bf` source code in the **examples** directory first run `bf16-compiler`, passing in
+the code over stdin and saving stdout as the object code:
+
+`<examples/helloworld.bf ./bf16-compiler > examples/helloworld.bf16`
+
+Then make the rom image with `tools/make-rom`:
+
+`<examples/helloworld.bf16 tools/make-rom > examples/helloworld.rom`
+
+This is all done in one easy step with `tee`:
+
+`<examples/hellworld.bf ./bf16-compiler | tee examples/helloworld.bf16 | tools-make-rom > examples/hellworld.rom`
+
+At this point `hellworld.rom` can be loaded in Logisim by right clicking the instructions ROM and choosing
+'Load Image'.
+
+## Why?!
+
+I designed this cpu just to learn and have something fun to play with, then discovered that it makes a halfway
+decent brainfuck debugger, since you can see instructions, memory, input, and output all at once. 
