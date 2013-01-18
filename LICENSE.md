@@ -1,3 +1,6 @@
+The bf16 cpu, compiler, circuit, and related tools were created by briandef
+and are subject to the following licensing terms:
+
 ```
 Copyright (c) 2013, briandef
 All rights reserved.
@@ -22,3 +25,6 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
+
+The **helloworld.bf** and **rot13.bf** source files in the **examples**
+directory are from the Wikipedia article <a href="http://en.wikipedia.org/wiki/Brainfuck">Brainfuck</a>, which is released under the <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share-Alike License 3.0</a>.
