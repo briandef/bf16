@@ -5,6 +5,8 @@
 * <a href="#the-instruction-set">The Instruction Set</a>
 * <a href="#the-cpu">The CPU</a>
 * <a href="#the-compiler">The Compiler</a>
+* <a href="#compiling-and-running-brainfuck-code">Compiling and Running Brainfuck Code</a>
+* <a href="#why">Why?!</a>
 
 ## Introduction
 
